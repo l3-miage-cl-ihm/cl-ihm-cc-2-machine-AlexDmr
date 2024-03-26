@@ -1,0 +1,37 @@
+$W: 80px;
+
+:host {
+  display: block;
+
+  > section {
+    display: flex;
+    flex-flow: row;
+    align-items: flex-end;
+
+    div[leaflet] {
+      width:  $W;
+      height: $W;
+      border: solid black 1px;
+      transition: .5s;
+    }
+
+    *.edition {
+      display: none;
+    }
+
+    &.edition {
+      div[leaflet] {
+        width: calc( 2 * $W );
+        height: calc( 2 * $W );
+      }
+
+      *.non-edition {
+        display: none;
+      }
+
+      *.edition {
+        display: inline-block;
+      }
+    }
+  }
+}

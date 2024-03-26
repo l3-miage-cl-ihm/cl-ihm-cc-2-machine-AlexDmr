@@ -1,0 +1,11 @@
+$WM: 320px;
+
+:host {
+
+    div[leaflet] {
+        width: $WM;
+        height: $WM;
+        // border-radius: 50%;
+        border: solid black 3px;
+    }
+}

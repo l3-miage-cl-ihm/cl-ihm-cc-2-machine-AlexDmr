@@ -1,0 +1,39 @@
+<section>
+
+    <button>Supprimer</button>
+
+    <div leaflet 
+        [leafletOptions]="{zoomControl: false, attributionControl: false}" 
+        [leafletLayers]="sigLayers()"
+        #markerMap
+        >
+    </div>
+
+
+    <section>
+        <section class="commandes">
+            <!-- Ajouter ici le ou les boutons pour basculer entre les modes édition et consultatation -->
+        </section>
+        
+        Adresse: 
+        <label class="non-edition">
+            <!-- Adresse postale en mode consultation -->
+        </label>
+        <!-- Adresse postale en mode édition -->
+        <form class="edition">
+            <input #newAd name="newAd" />
+        </form>
+        <br/>
+        Activité: 
+        <label class="non-edition">
+            <!-- Activité en mode consultation -->
+        </label>
+        <!-- Activité en mode édition -->
+        <select class="edition">
+            <option *ngFor="let todo of todos" [ngValue]="todo">{{todo}}</option>
+        </select> 
+    </section>
+
+
+
+</section>
