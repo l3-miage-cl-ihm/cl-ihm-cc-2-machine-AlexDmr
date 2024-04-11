@@ -24,7 +24,7 @@ export interface InfoAdresse extends AdresseProperties {
     todo: Activity
 }
 
-export const defaultAdresse = { id: -1, postal: "", latlng: new LatLng(0, 0), todo: "poubelles" };
+export const defaultAdresse: InfoAdresse = { id: -1, postal: "", latlng: new LatLng(0, 0), todo: "poubelles" };
 
 /**
  * Représente une mise à jour à appliquer sur une InfoAdresse
