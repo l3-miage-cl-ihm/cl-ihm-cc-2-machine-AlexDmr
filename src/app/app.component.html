@@ -10,9 +10,27 @@
 
 <hr/>
 <!-- Ajout d'une adresse à insérer ici -->
+<form (submit)="appendAdresse(newAdresse.value); newAdresse.value='' ">
+    Ajouter une adresse : 
+    <input #newAdresse name="newAdresse" />
+</form>
 
 <hr/>
 <!-- Filtre à insérer ici -->
-
+Choisissez une option :
+    <select [ngModel]="sigCurrentAdresseFilter()" (ngModelChange)="sigCurrentAdresseFilter.set($event)">
+      <!-- Faites bien le data-binding de la valeur associée à l'option à l'aide de l'atttribut ngValue -->
+      <option *ngFor="let filtre of filters" [ngValue]="filtre">{{filtre.label}}</option>
+    </select>
+    <br/><br/>
+    Vous avez sélectionné un {{sigCurrentAdresseFilter().label}} qui est associé à "{{sigCurrentAdresseFilter().fct}}"
 
 <!-- Liste des adresses à insérer ici -->
+<ul>
+    <li *ngFor="let info of sigInfoAdresse(); trackBy: trackById">
+        <app-adresse [infoAdresse]="info"
+                     (delete)="ads.removeAdresse(info)"
+                     (update)="ads.updateInfoAdresse(info, $event)"
+                     ></app-adresse>
+    </li>
+</ul>

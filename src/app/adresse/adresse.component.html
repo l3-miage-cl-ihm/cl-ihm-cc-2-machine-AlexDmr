@@ -1,10 +1,14 @@
-<section>
+<section [class.edition]="sigEdition()">
 
-    <button>Supprimer</button>
+    <button (click)="delete.emit()">Supprimer</button>
 
     <div leaflet 
         [leafletOptions]="{zoomControl: false, attributionControl: false}" 
         [leafletLayers]="sigLayers()"
+        [leafletZoom]   = "15"
+        [leafletCenter] = "infoAdresse.latlng"
+        (leafletClick)="centerOn($event)"
+        (leafletMapReady)="registerMap($event, markerMap)"
         #markerMap
         >
     </div>
@@ -13,23 +17,33 @@
     <section>
         <section class="commandes">
             <!-- Ajouter ici le ou les boutons pour basculer entre les modes édition et consultatation -->
+            <button (click)="sigEdition.set(!sigEdition())">
+                {{sigLabelButton()}}
+            </button>
         </section>
         
         Adresse: 
         <label class="non-edition">
             <!-- Adresse postale en mode consultation -->
+            {{infoAdresse.postal}}
         </label>
         <!-- Adresse postale en mode édition -->
-        <form class="edition">
-            <input #newAd name="newAd" />
+        <form   class="edition"
+                (submit)="update.emit({type: 'postal', postal: newAd.value})"
+                >
+            <input #newAd name="newAd" [ngModel]="infoAdresse.postal"/>
         </form>
         <br/>
         Activité: 
         <label class="non-edition">
             <!-- Activité en mode consultation -->
+            {{infoAdresse.todo}}
         </label>
         <!-- Activité en mode édition -->
-        <select class="edition">
+        <select class="edition"
+                [ngModel]="infoAdresse.todo"
+                (ngModelChange)="update.emit({type: 'todo', todo: $event})"
+                >
             <option *ngFor="let todo of todos" [ngValue]="todo">{{todo}}</option>
         </select> 
     </section>

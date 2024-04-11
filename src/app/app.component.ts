@@ -36,8 +36,43 @@ export class AppComponent {
   readonly sigLayers = computed<Layer[]>(() => [
     ...this._sigLayerMap(),
     // Insérer les marqueurs ici
+    ...this.sigInfoAdresse().map( info => getMarker(info.latlng) )
   ]);
 
-  constructor() { }
+  constructor(public ads: AdresseService) { }
+  
+  appendAdresse(postale: string): void {
+    this.ads.appendAdresse(postale, "nettoyage").then(
+      info => {
+        if (info === undefined) {
+          console.error("Problème adresse non trouvée:", postale)
+        }
+      }
+    )
+  }
+
+
+  trackById(_i: number, info: InfoAdresse): number {
+    return info.id;
+  }
+
+
+
+
+  readonly filters: readonly AdresseFilter[] = [
+    { label: 'livraison',   fct: (info) => info.todo === "livraison" },
+    { label: 'nettoyage', fct: (info) => info.todo === "nettoyage"  },
+    { label: 'poubelles', fct: info => info.todo === "poubelles" },
+    { label: 'TOUS', fct: () => true}
+  ];
+  readonly sigCurrentAdresseFilter = signal<AdresseFilter>(this.filters[3]);
+
+  readonly sigInfoAdresse = computed<readonly InfoAdresse[]>(
+    () => this.ads.sigInfoAdresse().filter( this.sigCurrentAdresseFilter().fct )
+  )
   
 }
+
+
+type FctAdresseFilter = (info: InfoAdresse) => boolean;
+type AdresseFilter = { label: string; fct: FctAdresseFilter };
